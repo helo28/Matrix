@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATRIX</title>
+
+    <!--ARRUMANDO O TAMANHO DA TELA PARA ELA FICAR MAIOR E OCUPAR TUDO-->
+    <style>
+        body{
+            margin: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+    </style>
+
+</head>
+<body>
+
+    <!--CANVAS - ÁREA DE DESENHO-->
+    <canvas width="500" height="200px" id="canv"></canvas>
+
+    <script>
+        const canvas = document.querySelector('#canv'); // getElementById('canv')
+        const ctx = canvas.getContext('2d'); /*CAIXA DE DESENHO FORNECE O CONTEXTO DE RENDERIZAÇÃO, EM 2D*/
+        const w = canvas.width = document.body.offsetWidth; // POSIÇÃO HORIZONTAL. PEGA TUDO QUE TEM DENTRO DO OFF(LARGURA E ALTURA EM PIXELS) E COLOCA NO W
+        const h = canvas.height = document.body.offsetHeight; // RETORNA A ALTURA EM PIXELS, TUDO QUE ESTÁ VISIVEL
+        const cols = Math.floor(w/10)+1; // COLS SÃO AS COLUNAS TOTAIS FLOOR ARREDONDA PARA BAIXO
+        const yPos = Array(cols).fill(0);
+
+        //FAZ UM DESENHO
+        ctx.fillStyle = '#000'; // LINHA PARA DESENHAR
+        ctx.fillRect(0,0,w,h);  // ONDE VAI COMEÇAR A DESENHAR
+
+        // ELE ESCREVE TUDO DE FORMA HORIZONTAL, MAS COMO ELE SABE TODAS AS COLUNAS ELE COLOCA ESSA IMPRESSÃO 
+        // DE QUE ESTÁ DESCENDO EM QUANTO ELE ESCREVE
+
+        function DesenhaMatrix() {
+            ctx.fillStyle = '#0001'; // LINHA PARA DESENHAR E COLOCANDO A COR DE FUNDO #0001(quase preto)
+            ctx.fillRect(0,0,w,h);  // ONDE VAI COMEÇAR A DESENHAR
+
+            // COLOCANDO A COR VERDE NAS LETRAS QUE VÃO DESCER QUE É O FONT 10 ALI
+            ctx.fillStyle = '#0f0'; // #0f0 VERDE
+            ctx.font = '10pt monospace';
+
+            // AEROFUNCTION EXECULTA UMA FUNÇÃO (execulta várias vezes) A SETINHA SIGNIFICA QUE VAI SER EXECULTADA
+            yPos.forEach((y, ind) =>{ // INDICE DE CADA LINHA EM CADA ALTURA ????
+                /*VAI ESCREVER AS LETRAS DE ACORDO COM OS CARACTERES*/
+                const text = String.fromCharCode(Math.random()*128) /*SORTEANDO NO RANDON E O 128 É A QUANTIDADE DE CARACTERES QUE TEM*/
+                const x = ind * 10;
+                ctx.fillText(text,x,y); // PEGAR O CARACTER E COLOCA NA ALTURA E NA COLUNA
+
+                // ESSE 10000 É SÓ PARA AJUDAR NESSE RETORNO DOS CARACTERES IGUAIS(DA UM EFEITO DE LOOP)
+                if(y>100 + Math.random() * 100000) yPos[ind] = 0;
+                //UTRAPASSANDO A TELA E ACABA MAIS PARA BAIXO
+                else yPos[ind] = y + 10;
+            });
+        }
+
+        setInterval(DesenhaMatrix,50);
+    </script>
+</body>
+</html>
